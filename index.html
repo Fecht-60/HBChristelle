@@ -1,162 +1,148 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Énigme</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0ece4;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #d6e4f0 0%, #dce8f5 50%, #cfe0f0 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      color: #3a3a5c;
     }
 
-    .card {
-      background: #fffdf8;
-      border-radius: 20px;
-      padding: 44px 36px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
-    }
-
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 28px;
-    }
-
-    .step-num {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #a89880;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .step-label {
-      font-size: 14px;
-      color: #7a6f63;
-      line-height: 1.4;
-    }
-
-    .crossword-btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: #c8b89a;
-      color: #fff;
-      border-radius: 12px;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
+    .container {
       text-align: center;
-      margin-bottom: 32px;
-      transition: opacity 0.15s;
+      padding: 40px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.8);
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(100,130,180,0.15);
     }
 
-    .crossword-btn:hover { opacity: 0.85; }
+    .icon { font-size: 3rem; margin-bottom: 16px; }
 
-    hr {
-      border: none;
-      border-top: 1px solid #ede8e0;
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #b07d3a;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #6a7a9a;
       margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .crossword-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #e8c97a, #c9943a);
+      color: #fff;
+      font-weight: bold;
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-bottom: 36px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(200,160,60,0.3);
+    }
+
+    .crossword-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(200,160,60,0.45);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(100,130,180,0.2);
+      margin: 0 0 28px;
     }
 
     label {
       display: block;
-      font-size: 13px;
-      color: #a89880;
-      margin-bottom: 10px;
-      letter-spacing: 0.02em;
+      font-size: 0.9rem;
+      color: #6a7a9a;
+      margin-bottom: 12px;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid #e2dbd0;
-      border-radius: 12px;
-      font-size: 18px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 2px solid rgba(100,130,180,0.25);
+      background: rgba(255,255,255,0.7);
+      color: #3a3a5c;
+      font-size: 1.1rem;
       text-align: center;
-      letter-spacing: 6px;
+      letter-spacing: 4px;
       text-transform: uppercase;
       outline: none;
-      transition: border-color 0.15s;
-      color: #5a4f45;
-      background: #faf7f2;
-      margin-bottom: 12px;
+      transition: border 0.2s;
+      margin-bottom: 16px;
     }
 
-    input[type="text"]::placeholder { letter-spacing: 2px; color: #d5cdc2; }
-    input[type="text"]:focus { border-color: #c8b89a; background: #fff; }
-    input[type="text"].error { border-color: #d98a8a; }
+    input[type="text"]::placeholder { letter-spacing: 2px; color: #b0bcd0; }
+    input[type="text"]:focus { border-color: #c9943a; }
 
     button {
       width: 100%;
       padding: 14px;
-      background: #c8b89a;
-      color: #fff;
+      background: linear-gradient(135deg, #e8c97a, #c9943a);
       border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 500;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: opacity 0.15s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(200,160,60,0.25);
       -webkit-tap-highlight-color: transparent;
     }
 
-    button:hover { opacity: 0.85; }
-    button:active { opacity: 0.7; transform: scale(0.99); }
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,160,60,0.4); }
+    button:active { transform: scale(0.99); }
 
-    .error-msg {
-      margin-top: 12px;
-      font-size: 13px;
-      color: #d98a8a;
-      text-align: center;
+    .error {
+      margin-top: 14px;
+      color: #d07070;
+      font-size: 0.9rem;
       display: none;
     }
 
     @media (max-width: 440px) {
-      .card { padding: 36px 24px; }
+      .container { padding: 32px 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-label">Résous le mot fléché en cliquant sur le lien ci-dessous</div>
-    </div>
+  <div class="container">
+    <div class="icon">🧩</div>
+    <h1>Énigme</h1>
+    <p class="subtitle">Commence par résoudre le mot fléché,<br>puis entre le code secret ci-dessous.</p>
 
-    <a class="crossword-btn" href="https://puzzel.org/fr/crossword/play?p=-OotlW72zDFxkJ2zk49G" target="_blank">
-      Accéder au mot fléché →
+    <a class="crossword-link" href="https://puzzel.org/fr/crossword/play?p=-OotlW72zDFxkJ2zk49G" target="_blank">
+      🔗 Accéder au mot fléché
     </a>
 
-    <div class="step" style="margin-bottom: 20px;">
-      <div class="step-num">2</div>
-      <div class="step-label">Entre le code secret trouvé dans le mot fléché</div>
-    </div>
+    <hr class="divider"/>
 
-    <hr/>
-
-    <label>Code secret</label>
-    <input type="text" id="code" placeholder="· · · · · ·" maxlength="12"
+    <label for="code">Entre le code secret issu du mot fléché :</label>
+    <input type="text" id="code" placeholder="••••••" maxlength="12"
            autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
-    <button onclick="verifier()">Valider</button>
-    <p class="error-msg" id="erreur">Code incorrect — réessaie.</p>
+    <button onclick="verifier()">Valider →</button>
+    <p class="error" id="erreur">❌ Code incorrect, réessaie !</p>
   </div>
 
   <script>
@@ -178,10 +164,10 @@
         sessionStorage.setItem('token_hash', await sha256(token));
         window.location.href = atob('YnJhdm8uaHRtbA==');
       } else {
-        input.classList.add('error');
+        input.style.borderColor = '#d07070';
         erreur.style.display = 'block';
         setTimeout(() => {
-          input.classList.remove('error');
+          input.style.borderColor = '';
           erreur.style.display = 'none';
         }, 2500);
       }
