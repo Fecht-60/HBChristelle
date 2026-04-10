@@ -1,156 +1,186 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Énigme</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f7f5f0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      padding: 24px;
     }
 
-    .container {
-      text-align: center;
-      padding: 40px;
-      background: rgba(255,255,255,0.07);
+    .card {
+      background: #fff;
       border-radius: 20px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-      max-width: 480px;
-      width: 90%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.07);
     }
 
-    .icon { font-size: 3rem; margin-bottom: 16px; }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: #f0c040;
-      letter-spacing: 1px;
-    }
-
-    .subtitle {
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.65);
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 28px;
-      line-height: 1.6;
     }
 
-    .crossword-link {
-      display: inline-block;
-      background: linear-gradient(135deg, #f0c040, #e08000);
-      color: #1a1a2e;
-      font-weight: bold;
-      padding: 14px 28px;
-      border-radius: 50px;
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-label {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .crossword-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 12px;
       text-decoration: none;
-      font-size: 1rem;
-      margin-bottom: 36px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(240,192,64,0.35);
+      font-size: 15px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 32px;
+      transition: opacity 0.15s;
     }
 
-    .crossword-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(240,192,64,0.5);
-    }
+    .crossword-btn:hover { opacity: 0.8; }
 
-    .divider {
+    hr {
       border: none;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      margin: 0 0 28px;
+      border-top: 1px solid #eee;
+      margin-bottom: 28px;
     }
 
     label {
       display: block;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 12px;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 14px 18px;
-      border-radius: 10px;
-      border: 2px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.1);
-      color: white;
-      font-size: 1.1rem;
+      padding: 14px 16px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 18px;
       text-align: center;
-      letter-spacing: 4px;
+      letter-spacing: 6px;
       text-transform: uppercase;
       outline: none;
-      transition: border 0.2s;
-      margin-bottom: 16px;
+      transition: border-color 0.15s;
+      color: #1a1a1a;
+      background: #fafafa;
+      margin-bottom: 12px;
     }
 
-    input[type="text"]::placeholder { letter-spacing: 2px; color: rgba(255,255,255,0.35); }
-    input[type="text"]:focus { border-color: #f0c040; }
+    input[type="text"]::placeholder { letter-spacing: 2px; color: #ccc; }
+    input[type="text"]:focus { border-color: #1a1a1a; background: #fff; }
+    input[type="text"].error { border-color: #e05252; }
 
     button {
       width: 100%;
       padding: 14px;
-      background: linear-gradient(135deg, #f0c040, #e08000);
+      background: #1a1a1a;
+      color: #fff;
       border: none;
-      border-radius: 10px;
-      color: #1a1a2e;
-      font-size: 1rem;
-      font-weight: bold;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(240,192,64,0.3);
+      transition: opacity 0.15s;
     }
 
-    button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,192,64,0.5); }
+    button:hover { opacity: 0.8; }
 
-    .error {
-      margin-top: 14px;
-      color: #ff6b6b;
-      font-size: 0.9rem;
+    .error-msg {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #e05252;
+      text-align: center;
       display: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="icon">🧩</div>
-    <h1>Énigme</h1>
-    <p class="subtitle">Commence par résoudre le mot fléché,<br>puis entre le code secret ci-dessous.</p>
+  <div class="card">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-label">Résous le mot fléché en cliquant sur le lien ci-dessous</div>
+    </div>
 
-    <a class="crossword-link" href="https://puzzel.org/fr/crossword/play?p=-OotlW72zDFxkJ2zk49G" target="_blank">
-      🔗 Accéder au mot fléché
+    <a class="crossword-btn" href="https://puzzel.org/fr/crossword/play?p=-OotlW72zDFxkJ2zk49G" target="_blank">
+      Accéder au mot fléché →
     </a>
 
-    <hr class="divider"/>
+    <div class="step" style="margin-bottom: 20px;">
+      <div class="step-num">2</div>
+      <div class="step-label">Entre le code secret trouvé dans le mot fléché</div>
+    </div>
 
-    <label for="code">Entre le code secret issu du mot fléché :</label>
-    <input type="text" id="code" placeholder="••••••" maxlength="10" />
-    <button onclick="verifier()">Valider →</button>
-    <p class="error" id="erreur">❌ Code incorrect, réessaie !</p>
+    <hr/>
+
+    <label>Code secret</label>
+    <input type="text" id="code" placeholder="· · · · · ·" maxlength="12" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <button onclick="verifier()">Valider</button>
+    <p class="error-msg" id="erreur">Code incorrect — réessaie.</p>
   </div>
 
   <script>
-    function verifier() {
-      const code = document.getElementById('code').value.trim().toUpperCase();
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    const H = '9424f75a85ddb1c4853de0fc4e625f0dd5d70a4c5aad7c9e5c8d70c16e8ec8b0';
+
+    async function verifier() {
+      const val = document.getElementById('code').value.trim().toUpperCase();
+      const input = document.getElementById('code');
       const erreur = document.getElementById('erreur');
-      if (code === 'VOYAGE') {
-        window.location.href = 'bravo.html';
+      const hash = await sha256(val);
+      if (hash === H) {
+        const token = crypto.randomUUID();
+        sessionStorage.setItem('access_token', token);
+        sessionStorage.setItem('token_hash', await sha256(token));
+        window.location.href = atob('YnJhdm8uaHRtbA==');
       } else {
+        input.classList.add('error');
         erreur.style.display = 'block';
-        document.getElementById('code').style.borderColor = '#ff6b6b';
+        setTimeout(() => {
+          input.classList.remove('error');
+          erreur.style.display = 'none';
+        }, 2500);
       }
     }
 
-    document.getElementById('code').addEventListener('keypress', function(e) {
+    document.getElementById('code').addEventListener('keypress', e => {
       if (e.key === 'Enter') verifier();
     });
   </script>
