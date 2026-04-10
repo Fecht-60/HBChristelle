@@ -8,101 +8,106 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0ece4;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #cfe0f0 0%, #dce8f5 50%, #d6e4f0 100%);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      color: #3a3a5c;
+      padding: 40px 20px;
+      text-align: center;
       opacity: 0;
       transition: opacity 0.5s ease;
     }
 
     body.visible { opacity: 1; }
 
-    .wrapper {
-      max-width: 480px;
-      width: 100%;
-      text-align: center;
+    .badge {
+      font-size: 4rem;
+      animation: pop 0.6s ease;
+      display: inline-block;
+      margin-bottom: 10px;
     }
 
-    .tag {
-      display: inline-block;
-      background: #c8b89a;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 24px;
+    @keyframes pop {
+      0%   { transform: scale(0); opacity: 0; }
+      70%  { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #5a4f45;
-      margin-bottom: 20px;
-      line-height: 1.2;
+      font-size: 2.2rem;
+      color: #b07d3a;
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s ease 0.2s both;
     }
 
     .message {
-      font-size: 15px;
-      color: #7a6f63;
-      line-height: 1.85;
-      margin-bottom: 36px;
-      padding: 24px 28px;
-      background: #fffdf8;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #5a6a8a;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.85);
       border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-      text-align: left;
+      padding: 24px 28px;
+      backdrop-filter: blur(8px);
+      animation: fadeUp 0.7s ease 0.4s both;
     }
 
-    .message strong { color: #5a4f45; font-weight: 600; }
+    .message strong { color: #b07d3a; }
 
     .photos {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       justify-content: center;
+      flex-wrap: wrap;
+      max-width: 480px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease 0.6s both;
     }
 
     .photos img {
-      width: calc(50% - 8px);
+      width: calc(50% - 10px);
       max-width: 210px;
       aspect-ratio: 3/4;
       object-fit: cover;
       border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 8px 30px rgba(100,130,180,0.2);
+      transition: transform 0.3s;
     }
 
-    .photos img:hover { transform: translateY(-4px); }
+    .photos img:hover { transform: scale(1.03); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
 
     @media (max-width: 440px) {
-      h1 { font-size: 1.6rem; }
-      .message { padding: 20px; font-size: 14px; }
+      h1 { font-size: 1.7rem; }
+      .message { padding: 20px; font-size: 0.95rem; }
       .photos { gap: 12px; }
-      .photos img { border-radius: 12px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="tag">Énigme résolue</div>
-    <h1>Bien joué&nbsp;!</h1>
+  <canvas id="confetti"></canvas>
 
-    <div class="message">
-      Tu as trouvé le résultat du mot fléché…<br/><br/>
-      <strong>En regroupant les deux énigmes, est-ce qu'une petite idée se profile&nbsp;?</strong><br/><br/>
-      Si non, un peu de patience —<br/>on vous dévoile tout ça <strong>début juillet&nbsp;!</strong> 🗓️
-    </div>
+  <div class="badge">🎉</div>
+  <h1>Bien joué !</h1>
 
-    <div class="photos">
-      <img src="photo1.jpg" alt=""/>
-      <img src="photo2.jpg" alt=""/>
-    </div>
+  <div class="message">
+    Tu as trouvé le résultat du mot fléché…<br/><br/>
+    <strong>En regroupant les deux énigmes, est-ce qu'une petite idée se profile ?</strong><br/><br/>
+    Si non, un peu de patience — on vous dévoile tout ça <strong>début juillet !</strong> 🗓️
+  </div>
+
+  <div class="photos">
+    <img src="photo1.jpg" alt=""/>
+    <img src="photo2.jpg" alt=""/>
   </div>
 
   <script>
@@ -122,6 +127,39 @@
       sessionStorage.removeItem('token_hash');
       document.body.classList.add('visible');
     })();
+
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#e8c97a','#a8c8e8','#c8a8d8','#a8d8c0','#f0b8b8'];
+    const pieces = Array.from({length: 80}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 7 + 4,
+      tilt: Math.random() * 10 - 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 2 + 1
+    }));
+
+    let angle = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      angle += 0.01;
+      pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.ellipse(p.x, p.y, p.r, p.r / 2, p.tilt, 0, 2 * Math.PI);
+        ctx.fill();
+        p.y += p.speed;
+        p.x += Math.sin(angle) * 0.9;
+        if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 </body>
 </html>
