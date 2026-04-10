@@ -9,7 +9,7 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f7f5f0;
+      background: #f0ece4;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -18,12 +18,12 @@
     }
 
     .card {
-      background: #fff;
+      background: #fffdf8;
       border-radius: 20px;
-      padding: 48px 40px;
+      padding: 44px 36px;
       max-width: 420px;
       width: 100%;
-      box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
     }
 
     .step {
@@ -37,7 +37,7 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #1a1a1a;
+      background: #a89880;
       color: #fff;
       font-size: 12px;
       font-weight: 600;
@@ -49,7 +49,7 @@
 
     .step-label {
       font-size: 14px;
-      color: #555;
+      color: #7a6f63;
       line-height: 1.4;
     }
 
@@ -57,7 +57,7 @@
       display: block;
       width: 100%;
       padding: 14px;
-      background: #1a1a1a;
+      background: #c8b89a;
       color: #fff;
       border-radius: 12px;
       text-decoration: none;
@@ -68,18 +68,18 @@
       transition: opacity 0.15s;
     }
 
-    .crossword-btn:hover { opacity: 0.8; }
+    .crossword-btn:hover { opacity: 0.85; }
 
     hr {
       border: none;
-      border-top: 1px solid #eee;
+      border-top: 1px solid #ede8e0;
       margin-bottom: 28px;
     }
 
     label {
       display: block;
       font-size: 13px;
-      color: #888;
+      color: #a89880;
       margin-bottom: 10px;
       letter-spacing: 0.02em;
     }
@@ -87,7 +87,7 @@
     input[type="text"] {
       width: 100%;
       padding: 14px 16px;
-      border: 1.5px solid #e0e0e0;
+      border: 1.5px solid #e2dbd0;
       border-radius: 12px;
       font-size: 18px;
       text-align: center;
@@ -95,19 +95,19 @@
       text-transform: uppercase;
       outline: none;
       transition: border-color 0.15s;
-      color: #1a1a1a;
-      background: #fafafa;
+      color: #5a4f45;
+      background: #faf7f2;
       margin-bottom: 12px;
     }
 
-    input[type="text"]::placeholder { letter-spacing: 2px; color: #ccc; }
-    input[type="text"]:focus { border-color: #1a1a1a; background: #fff; }
-    input[type="text"].error { border-color: #e05252; }
+    input[type="text"]::placeholder { letter-spacing: 2px; color: #d5cdc2; }
+    input[type="text"]:focus { border-color: #c8b89a; background: #fff; }
+    input[type="text"].error { border-color: #d98a8a; }
 
     button {
       width: 100%;
       padding: 14px;
-      background: #1a1a1a;
+      background: #c8b89a;
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -115,16 +115,22 @@
       font-weight: 500;
       cursor: pointer;
       transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    button:hover { opacity: 0.8; }
+    button:hover { opacity: 0.85; }
+    button:active { opacity: 0.7; transform: scale(0.99); }
 
     .error-msg {
       margin-top: 12px;
       font-size: 13px;
-      color: #e05252;
+      color: #d98a8a;
       text-align: center;
       display: none;
+    }
+
+    @media (max-width: 440px) {
+      .card { padding: 36px 24px; }
     }
   </style>
 </head>
@@ -147,7 +153,8 @@
     <hr/>
 
     <label>Code secret</label>
-    <input type="text" id="code" placeholder="· · · · · ·" maxlength="12" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <input type="text" id="code" placeholder="· · · · · ·" maxlength="12"
+           autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
     <button onclick="verifier()">Valider</button>
     <p class="error-msg" id="erreur">Code incorrect — réessaie.</p>
   </div>
@@ -158,7 +165,7 @@
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
     }
 
-    const H = '9424f75a85ddb1c4853de0fc4e625f0dd5d70a4c5aad7c9e5c8d70c16e8ec8b0';
+    const H = '1079a835fb3351be59143397f999e1fb98916d93ca0f133d082dd607b4ba5ef8';
 
     async function verifier() {
       const val = document.getElementById('code').value.trim().toUpperCase();
