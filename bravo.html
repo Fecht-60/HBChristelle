@@ -1,158 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Énigme</title>
+  <title>Bravo !</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white;
-    }
-
-    .container {
+      padding: 40px 20px;
       text-align: center;
-      padding: 40px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-      max-width: 480px;
-      width: 90%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
 
-    .icon { font-size: 3rem; margin-bottom: 16px; }
+    .badge {
+      font-size: 4rem;
+      animation: pop 0.6s ease;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    @keyframes pop {
+      0%   { transform: scale(0); opacity: 0; }
+      70%  { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
       color: #f0c040;
-      letter-spacing: 1px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.7s ease 0.2s both;
     }
 
-    .subtitle {
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 28px;
-      line-height: 1.6;
+    .message {
+      max-width: 560px;
+      margin: 0 auto 36px;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 24px 28px;
+      animation: fadeUp 0.7s ease 0.4s both;
     }
 
-    .crossword-link {
-      display: inline-block;
-      background: linear-gradient(135deg, #f0c040, #e08000);
-      color: #1a1a2e;
-      font-weight: bold;
-      padding: 14px 28px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-size: 1rem;
-      margin-bottom: 36px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(240,192,64,0.35);
+    .message strong { color: #f0c040; }
+
+    .photos {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 600px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease 0.6s both;
     }
 
-    .crossword-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(240,192,64,0.5);
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      margin: 0 0 28px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 12px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 10px;
+    .photos img {
+      width: 240px;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 14px;
       border: 2px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.1);
-      color: white;
-      font-size: 1.1rem;
-      text-align: center;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      outline: none;
-      transition: border 0.2s;
-      margin-bottom: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
     }
 
-    input[type="text"]::placeholder { letter-spacing: 2px; color: rgba(255,255,255,0.35); }
-    input[type="text"]:focus { border-color: #f0c040; }
+    .photos img:hover { transform: scale(1.04); }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #f0c040, #e08000);
-      border: none;
-      border-radius: 10px;
-      color: #1a1a2e;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(240,192,64,0.3);
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,192,64,0.5); }
-
-    .error {
-      margin-top: 14px;
-      color: #ff6b6b;
-      font-size: 0.9rem;
-      display: none;
-    }
+    canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="icon">🧩</div>
-    <h1>Énigme</h1>
-    <p class="subtitle">Commence par résoudre le mot fléché,<br>puis entre le code secret ci-dessous.</p>
 
-    <a class="crossword-link" href="https://URL-DU-MOT-FLECHE.com" target="_blank">
-      🔗 Accéder au mot fléché
-    </a>
+  <canvas id="confetti"></canvas>
 
-    <hr class="divider"/>
+  <div class="badge">🎉</div>
+  <h1>Bien joué !</h1>
 
-    <label for="code">Entre le code secret issu du mot fléché :</label>
-    <input type="text" id="code" placeholder="••••••" maxlength="10" />
-    <button onclick="verifier()">Valider →</button>
-    <p class="error" id="erreur">❌ Code incorrect, réessaie !</p>
+  <div class="message">
+    Tu as trouvé le résultat du mot fléché…<br/><br/>
+    <strong>En regroupant les deux énigmes, est-ce qu'une petite idée se profile ?</strong><br/><br/>
+    Si non, un peu de patience —<br/>on vous dévoile tout ça <strong>début juillet !</strong> 🗓️
+  </div>
+
+  <div class="photos">
+    <img src="photo1.jpg" alt="Photo 1" />
+    <img src="photo2.jpg" alt="Photo 2" />
   </div>
 
   <script>
-    function verifier() {
-      const code = document.getElementById('code').value.trim().toUpperCase();
-      const erreur = document.getElementById('erreur');
-      if (code === 'VOYAGE') {
-        window.location.href = 'bravo.html';
-      } else {
-        erreur.style.display = 'block';
-        document.getElementById('code').style.borderColor = '#ff6b6b';
-      }
-    }
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
 
-    document.getElementById('code').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') verifier();
-    });
+    const colors = ['#f0c040','#ff6b6b','#6bcfff','#a0ff80','#ff9ff3'];
+    const pieces = Array.from({length: 90}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 7 + 4,
+      tilt: Math.random() * 10 - 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 2 + 1
+    }));
+
+    let angle = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      angle += 0.01;
+      pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.ellipse(p.x, p.y, p.r, p.r / 2, p.tilt, 0, 2 * Math.PI);
+        ctx.fill();
+        p.y += p.speed;
+        p.x += Math.sin(angle) * 0.9;
+        if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 </body>
 </html>
