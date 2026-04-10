@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Énigme</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .icon { font-size: 3rem; margin-bottom: 16px; }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #f0c040;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .crossword-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #f0c040, #e08000);
+      color: #1a1a2e;
+      font-weight: bold;
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-bottom: 36px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(240,192,64,0.35);
+    }
+
+    .crossword-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(240,192,64,0.5);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin: 0 0 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 12px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      outline: none;
+      transition: border 0.2s;
+      margin-bottom: 16px;
+    }
+
+    input[type="text"]::placeholder { letter-spacing: 2px; color: rgba(255,255,255,0.35); }
+    input[type="text"]:focus { border-color: #f0c040; }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #f0c040, #e08000);
+      border: none;
+      border-radius: 10px;
+      color: #1a1a2e;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(240,192,64,0.3);
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,192,64,0.5); }
+
+    .error {
+      margin-top: 14px;
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🧩</div>
+    <h1>Énigme</h1>
+    <p class="subtitle">Commence par résoudre le mot fléché,<br>puis entre le code secret ci-dessous.</p>
+
+    <a class="crossword-link" href="https://URL-DU-MOT-FLECHE.com" target="_blank">
+      🔗 Accéder au mot fléché
+    </a>
+
+    <hr class="divider"/>
+
+    <label for="code">Entre le code secret issu du mot fléché :</label>
+    <input type="text" id="code" placeholder="••••••" maxlength="10" />
+    <button onclick="verifier()">Valider →</button>
+    <p class="error" id="erreur">❌ Code incorrect, réessaie !</p>
+  </div>
+
+  <script>
+    function verifier() {
+      const code = document.getElementById('code').value.trim().toUpperCase();
+      const erreur = document.getElementById('erreur');
+      if (code === 'VOYAGE') {
+        window.location.href = 'bravo.html';
+      } else {
+        erreur.style.display = 'block';
+        document.getElementById('code').style.borderColor = '#ff6b6b';
+      }
+    }
+
+    document.getElementById('code').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') verifier();
+    });
+  </script>
+</body>
+</html>
